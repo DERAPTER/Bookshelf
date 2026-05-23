@@ -9,15 +9,20 @@ import Foundation
 
 
 protocol RegistViewPresenterProtocol: AnyObject {
-    
+    func checkName()
 }
 
 
 class RegistViewPresenter: RegistViewPresenterProtocol {
+    
     weak var view: (any RegistViewProtocol)?
     
     init(view: any RegistViewProtocol) {
         self.view = view
+    }
+    
+    func checkName() {
+        <#code#>
     }
     
 }
