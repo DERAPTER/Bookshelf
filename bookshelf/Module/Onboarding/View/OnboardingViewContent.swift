@@ -11,13 +11,7 @@ struct OnboardingViewContent: View {
     var slides: [OnboardingViewData]
     var completion: () -> Void
     
-    @State var selected: Int = 0 {
-        willSet {
-            if newValue == slides.count - 1 {
-                btnText = "Начать пользоваться"
-            }
-        }
-    }
+    @State var selected: Int = 0
     @State var btnText: String = "Далее"
     
     var body: some View {
@@ -53,6 +47,15 @@ struct OnboardingViewContent: View {
                     }
                 }
                 
+            }
+            .onChange(of: selected) { oldValue, newValue in
+                withAnimation {
+                    if newValue == slides.count - 1 {
+                        btnText = "Начать пользоваться"
+                    } else {
+                        btnText = "Далее"
+                    }
+                }
             }
             .frame(height: 400)
             
