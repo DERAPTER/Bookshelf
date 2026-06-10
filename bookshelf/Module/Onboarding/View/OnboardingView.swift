@@ -11,7 +11,7 @@ protocol OnboardingViewProtocol: BaseViewProtocol {
     
 }
 
-class OnboardingView: UIView, OnboardingViewProtocol {
+class OnboardingView: UIViewController, OnboardingViewProtocol {
     typealias PresenterType = OnboardingViewPresenterProtocol
     var presenter: PresenterType?
     

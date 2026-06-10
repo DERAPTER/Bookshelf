@@ -36,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case .reg:
             self.window?.rootViewController = Builder.createRegistView()
         case .onboarding:
-            print("ONBOARDING")
+            self.window?.rootViewController = Builder.createOnboardingView()
         case .main:
             print("MAIN")
         }
