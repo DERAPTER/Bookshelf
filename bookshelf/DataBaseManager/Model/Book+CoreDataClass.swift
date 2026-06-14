@@ -36,5 +36,8 @@ extension Book {
 }
 
 extension Book : Identifiable {
-
+    func deleteBook() {
+        managedObjectContext?.delete(self)
+        try? managedObjectContext?.save()
+    }
 }
