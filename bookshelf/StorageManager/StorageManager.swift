@@ -14,7 +14,6 @@ class StorageManager {
     //MARK: Save cover
     ///`saveCover` функция для сохранения обложки
     ///`cover.jpeg` стандартное название обложки
-    
     func saveCover(bookId: String, cover: Data) {
         var bookPath = path.appending(component: bookId)
         try? FileManager.default.createDirectory(at: bookPath, withIntermediateDirectories: true, attributes: nil)
@@ -25,6 +24,21 @@ class StorageManager {
             try cover.write(to: coverPath)
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    /// `getCover` функция для получения файла
+    func getCover(bookId: String) -> Data? {
+        var coverPath = path
+            .appending(component: bookId)
+            .appending(component: "cover.jpeg")
+        
+        do {
+            let coverData = try Data(contentsOf: coverPath)
+            return coverData
+        } catch {
+            print(error.localizedDescription)
+            return nil
         }
     }
 }
