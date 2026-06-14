@@ -3,8 +3,9 @@
     <entity name="Book" representedClassName="Book" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="bookDescription" optional="YES" attributeType="String"/>
+        <attribute name="coverURL" optional="YES" attributeType="String"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="notes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Note" inverseName="book" inverseEntity="Note"/>
