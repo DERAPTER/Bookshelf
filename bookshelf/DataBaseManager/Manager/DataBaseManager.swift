@@ -79,3 +79,16 @@ extension DataBaseManager {
         }
     }
 }
+
+extension DataBaseManager {
+    //MARK: Note
+    /// `addNote` функция для добавления заметки
+    func addNote(book: Book, noteText: String) {
+        let note: Note = {
+            $0.date = Date()
+            $0.id = UUID().uuidString
+            $0.book = book
+            return $0
+        }(Note(context: persistentContainer.viewContext))
+    }
+}
