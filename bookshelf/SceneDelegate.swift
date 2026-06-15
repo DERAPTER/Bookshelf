@@ -38,7 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         case .onboarding:
             self.window?.rootViewController = Builder.createOnboardingView()
         case .main:
-            print("MAIN")
+            self.window?.rootViewController = Builder.createMainView()
         }
     }
 

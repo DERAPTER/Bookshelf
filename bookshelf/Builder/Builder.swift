@@ -35,4 +35,9 @@ class Builder {
         }
     }
     
+    static func createMainView() -> UIViewController {
+        return self.createView(viewType: MainView.self) { view in
+            MainViewPresenter(view: view)
+        }
+    }
 }
