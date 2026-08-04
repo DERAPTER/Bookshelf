@@ -8,7 +8,7 @@
 import UIKit
 
 
-enum WindowCase {
+enum WindowCase: String {
     case reg, onboarding, main
 }
 

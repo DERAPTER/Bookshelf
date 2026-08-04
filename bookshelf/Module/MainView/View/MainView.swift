@@ -17,6 +17,7 @@ class MainView: UIViewController, MainViewProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
 }

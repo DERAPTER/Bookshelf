@@ -10,6 +10,8 @@ import Lottie
 
 class PreviewView: UIViewController {
     
+    var state: WindowCase = .reg
+    
     lazy var lottieView: LottieAnimationView = {
         $0.frame.size = CGSize(width: view.frame.width - 80, height: view.frame.width - 80)
         $0.center = view.center
@@ -21,10 +23,16 @@ class PreviewView: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .bgMain
         view.addSubview(lottieView)
-        lottieView.play(fromFrame: 0, toFrame: 240, loopMode: .playOnce) { _ in
-            NotificationCenter.default.post(name: .windowManager, object: nil, userInfo: [String.windowInfo: WindowCase.reg])
+        
+        if let stateRaw = UserDefaults.standard.string(forKey: "state") {
+            if let state = WindowCase(rawValue: stateRaw) {
+                self.state = state
+            }
         }
-
+        
+        lottieView.play(fromFrame: 0, toFrame: 240, loopMode: .playOnce) { _ in
+            NotificationCenter.default.post(name: .windowManager, object: nil, userInfo: [String.windowInfo: self.state])
+        }
     }
     
 }
