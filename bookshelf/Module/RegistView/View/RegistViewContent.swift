@@ -20,13 +20,7 @@ struct RegistViewContent: View {
                 
                 Spacer()
                 
-                TextField("Ваше имя", text: $nameField)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 52)
-                    .padding(.horizontal, 10)
-                    .background(.appDark)
-                    .foregroundStyle(.white)
-                    .clipShape(.rect(cornerRadius: 10))
+                BaseTextView(placeholder: "Ваше Имя", text: $nameField)
                 
                 Spacer()
                 
