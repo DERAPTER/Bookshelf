@@ -12,6 +12,8 @@ struct MainViewContent: View {
     @State var searchField = ""
     var name: String
     
+    //var books: [Book]
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack {
@@ -54,7 +56,46 @@ struct MainViewContent: View {
                 }
                 .padding(.horizontal, 30)
             
-                
+                //MARK: READ
+                VStack(alignment: .leading, spacing: 18) {
+                    
+                    Text("Читаю")
+                        .font(type: .bold, size: 22)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 30)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 20) {
+                            Button {
+                                
+                            } label: {
+                                Image(.cover)
+                                    .resizable()
+                                    .frame(width: 143, height: 212)
+                                    .clipShape(.rect(cornerRadius: 5))
+                            }
+                            
+                            Button {
+                                
+                            } label: {
+                                Image(.cover)
+                                    .resizable()
+                                    .frame(width: 143, height: 212)
+                                    .clipShape(.rect(cornerRadius: 5))
+                            }
+                            
+                            Button {
+                                
+                            } label: {
+                                Image(.cover)
+                                    .resizable()
+                                    .frame(width: 143, height: 212)
+                                    .clipShape(.rect(cornerRadius: 5))
+                            }
+                        }
+                        .padding(.horizontal, 30)
+                    }
+                }
                 
             }
         }
