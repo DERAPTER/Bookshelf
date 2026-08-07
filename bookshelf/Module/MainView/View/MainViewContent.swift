@@ -7,9 +7,15 @@
 
 import SwiftUI
 
+enum SelectedCategory {
+    case willRead
+    case didRead
+}
+
 struct MainViewContent: View {
     
     @State var searchField = ""
+    @State private var selectedCategory: SelectedCategory = .willRead
     var name: String
     
     //var books: [Book]
@@ -104,7 +110,22 @@ struct MainViewContent: View {
                         
                     }
                     
-                    
+                    //MARK: Will/Did Read
+                    VStack(alignment: .leading) {
+                        HStack(alignment: .bottom, spacing: 26) {
+                            Button {
+                                selectedCategory = .willRead
+                            } label: {
+                                createButtonText(text: "Прочитать", category: .willRead)
+                            }
+                            
+                            Button {
+                                selectedCategory = .didRead
+                            } label: {
+                                createButtonText(text: "Прочитал", category: .didRead)
+                            }
+                        }
+                    }
                 }
             }
             //.ignoresSafeArea()
@@ -112,6 +133,16 @@ struct MainViewContent: View {
             .background(Color.bgMain)
         }
     }
+    
+    @ViewBuilder
+    func createButtonText(text: String, category: SelectedCategory) -> some View {
+        let condition = selectedCategory == category
+        
+        Text(text)
+            .font(type: condition ? .bold : .regular, size: condition ? 22 : 20)
+            .foregroundStyle(condition ? .white : .appGray)
+    }
+    
 }
 
 
