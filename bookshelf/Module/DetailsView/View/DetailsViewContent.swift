@@ -46,9 +46,9 @@ struct DetailsViewContent: View {
             
             ScrollView {
                 VStack {
-                    GeometryReader { proxy in
-                        let minY = proxy.frame(in: .global).minY
-                        ZStack {
+                    ZStack(alignment: .top) {
+                        GeometryReader { proxy in
+                            let minY = proxy.frame(in: .global).minY
                             Image(.cover)
                                 .resizable()
                                 .scaledToFill()
@@ -60,8 +60,25 @@ struct DetailsViewContent: View {
                                 }
                                 .offset(y: -minY)
                         }
+                        .frame(height: 400)
+                        
+                        VStack(spacing: 15) {
+                            Image(.cover)
+                            
+                            VStack(spacing: 2) {
+                                Text("Война и Мир")
+                                    .font(type: .bold, size: 20)
+                                Text("Лев Толстой")
+                                    .font(type: .medium, size: 14)
+                            }
+                            .foregroundStyle(.white)
+                            
+                            BookStatusButton(status: .didRead) {
+                                
+                            }
+                        }
+                        .padding(.top, 55)
                     }
-                    .frame(height: 400)
                 }
             }
         }
@@ -71,4 +88,49 @@ struct DetailsViewContent: View {
 
 #Preview {
     DetailsViewContent()
+}
+
+struct BookStatusButton: View {
+    var status: BookStatus
+    var action: () -> Void
+    private var btnText: String
+    
+    init(status: BookStatus, action: @escaping () -> Void) {
+        self.status = status
+        self.action = action
+        
+        switch status {
+        case .read:
+            self.btnText = "Читаю"
+        case .willRead:
+            self.btnText = "Прочитать"
+        case .didRead:
+            self.btnText = "Прочитал"
+        }
+    }
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            Text(btnText)
+                .padding(.vertical, 3)
+                .padding(.horizontal, 18)
+                .font(type: .bold, size: 14)
+                .foregroundStyle(.white)
+                .background(btnColor())
+                .clipShape(Capsule())
+        }
+    }
+    
+    func btnColor() -> Color {
+        switch status {
+        case .read:
+            return Color.statusFirst
+        case .willRead:
+            return Color.statusSecond
+        case .didRead:
+            return Color.statusThird
+        }
+    }
 }
