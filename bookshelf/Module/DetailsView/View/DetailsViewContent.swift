@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DetailsViewContent: View {
+    @State var bookNote: String = ""
+    
     var body: some View {
         ZStack(alignment: .top) {
             HStack {
@@ -45,7 +47,7 @@ struct DetailsViewContent: View {
             .padding(.horizontal, 30)
             
             ScrollView {
-                VStack {
+                VStack(spacing: 29) {
                     ZStack(alignment: .top) {
                         GeometryReader { proxy in
                             let minY = proxy.frame(in: .global).minY
@@ -79,7 +81,36 @@ struct DetailsViewContent: View {
                         }
                         .padding(.top, 55)
                     }
+                    
+                    VStack(alignment: .leading, spacing: 36) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("Описание")
+                                .font(type: .black, size: 18)
+                                .foregroundStyle(.white)
+                            Text("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo")
+                                .font(size: 14)
+                                .foregroundStyle(.appGray)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 14) {
+                            Text("Заметки по книге")
+                                .font(type: .bold, size: 18)
+                                .foregroundStyle(.white)
+                            
+                            VStack(alignment: .leading, spacing: 14) {
+                                
+                                CommentView()
+                                CommentView()
+                                
+                            }
+                            
+                            BaseTextView(placeholder: "Добавить заметку", text: $bookNote)
+                        }
+                    }
+                    .padding(.horizontal, 30)
+                    .background(.bgMain)
                 }
+                .padding(.bottom, 30)
             }
         }
         .background(.bgMain)
@@ -88,49 +119,4 @@ struct DetailsViewContent: View {
 
 #Preview {
     DetailsViewContent()
-}
-
-struct BookStatusButton: View {
-    var status: BookStatus
-    var action: () -> Void
-    private var btnText: String
-    
-    init(status: BookStatus, action: @escaping () -> Void) {
-        self.status = status
-        self.action = action
-        
-        switch status {
-        case .read:
-            self.btnText = "Читаю"
-        case .willRead:
-            self.btnText = "Прочитать"
-        case .didRead:
-            self.btnText = "Прочитал"
-        }
-    }
-    
-    var body: some View {
-        Button {
-            action()
-        } label: {
-            Text(btnText)
-                .padding(.vertical, 3)
-                .padding(.horizontal, 18)
-                .font(type: .bold, size: 14)
-                .foregroundStyle(.white)
-                .background(btnColor())
-                .clipShape(Capsule())
-        }
-    }
-    
-    func btnColor() -> Color {
-        switch status {
-        case .read:
-            return Color.statusFirst
-        case .willRead:
-            return Color.statusSecond
-        case .didRead:
-            return Color.statusThird
-        }
-    }
 }
