@@ -9,6 +9,10 @@ import SwiftUI
 
 struct DetailsViewContent: View {
     @State var bookNote: String = ""
+    @State var offsetTop: CGFloat = 0
+    @State var showTitle: Bool = false
+    
+    var bookName: String = "Война и Мир"
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -25,7 +29,7 @@ struct DetailsViewContent: View {
                 
                 Spacer()
                 
-                Text("О книге")
+                Text(showTitle ? bookName : "О книге")
                     .font(size: 18)
                 
                 Spacer()
@@ -43,8 +47,11 @@ struct DetailsViewContent: View {
             }
             .foregroundStyle(.white)
             .zIndex(1)
-            .padding(.top, 15)
+            .padding(.top, 55)
             .padding(.horizontal, 30)
+            .background(
+                .bgMain.opacity(offsetTop < 0 ? (-offsetTop * 4.5 / 1000) : 0)
+            )
             
             ScrollView {
                 VStack(spacing: 29) {
@@ -60,7 +67,17 @@ struct DetailsViewContent: View {
                                 .overlay {
                                     Color(.purple).opacity(0.5)
                                 }
-                                .offset(y: -minY)
+                                .offset(y: minY > 0 ? -minY : 0)
+                                .onChange(of: minY) { oldValue, newValue in
+                                    offsetTop = newValue
+                                    withAnimation {
+                                        if newValue < -229 {
+                                            showTitle = true
+                                        } else {
+                                            showTitle = false
+                                        }
+                                    }
+                                }
                         }
                         .frame(height: 400)
                         
@@ -79,7 +96,7 @@ struct DetailsViewContent: View {
                                 
                             }
                         }
-                        .padding(.top, 55)
+                        .padding(.top, 90)
                     }
                     
                     VStack(alignment: .leading, spacing: 36) {
@@ -108,12 +125,13 @@ struct DetailsViewContent: View {
                         }
                     }
                     .padding(.horizontal, 30)
-                    .background(.bgMain)
+                    // .background(.bgMain)
                 }
                 .padding(.bottom, 30)
             }
         }
         .background(.bgMain)
+        .ignoresSafeArea()
     }
 }
 
