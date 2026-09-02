@@ -11,6 +11,7 @@ struct DetailsViewContent: View {
     @State var bookNote: String = ""
     @State var offsetTop: CGFloat = 0
     @State var showTitle: Bool = false
+    @State var commentDeleteOffsetX: CGFloat = 0
     
     var bookName: String = "Война и Мир"
     
@@ -116,7 +117,43 @@ struct DetailsViewContent: View {
                             
                             VStack(alignment: .leading, spacing: 14) {
                                 
-                                CommentView()
+                                ZStack(alignment: .trailing) {
+                                    CommentView()
+                                        .offset(x: -commentDeleteOffsetX)
+                                        .gesture(
+                                            DragGesture()
+                                                .onChanged({ value in
+                                                    if value.translation.width < -commentDeleteOffsetX {
+                                                        withAnimation{
+                                                            commentDeleteOffsetX = abs(value.translation.width)
+                                                        }
+                                                    }
+                                                })
+                                                .onEnded({ value in
+                                                    if value.translation.width < -100 {
+                                                        withAnimation{
+                                                            commentDeleteOffsetX = 150
+                                                        }
+                                                    } else {
+                                                        withAnimation{
+                                                            commentDeleteOffsetX = 0
+                                                        }
+                                                    }
+                                                })
+                                        )
+                                        .zIndex(1)
+                                    
+                                    Button {
+                                        
+                                    } label: {
+                                        Image(systemName: "trash")
+                                            .resizable()
+                                            .foregroundStyle(.white)
+                                            .frame(width: 20, height: 20)
+                                            .opacity(commentDeleteOffsetX > 0 ? (commentDeleteOffsetX/100) : 0)
+                                            .padding(.trailing, 20)
+                                    }
+                                }
                                 CommentView()
                                 
                             }

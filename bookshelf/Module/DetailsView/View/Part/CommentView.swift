@@ -20,5 +20,6 @@ struct CommentView: View {
         .padding(.vertical, 12)
         .padding(.horizontal, 21)
         .background(.appDark)
+        .clipShape(.rect(cornerRadius: 10))
     }
 }
