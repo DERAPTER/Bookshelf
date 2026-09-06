@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 protocol DetailsViewProtocol: BaseViewProtocol {
     
@@ -18,6 +19,13 @@ class DetailsView: UIViewController, DetailsViewProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let contentView = DetailsViewContent()
+        let content = UIHostingController(rootView: contentView)
+        addChild(content)
+        content.view.frame = view.frame
+        view.addSubview(content.view)
+        content.didMove(toParent: self)
     }
     
 }

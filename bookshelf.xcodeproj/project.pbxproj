@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		198E2975304CB05400A3929C /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 198E2974304CB05400A3929C /* SDWebImageSwiftUI */; };
 		19D5A1D42FBA1AC1000D4AFB /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 19D5A1D32FBA1AC1000D4AFB /* Lottie */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				198E2975304CB05400A3929C /* SDWebImageSwiftUI in Frameworks */,
 				19D5A1D42FBA1AC1000D4AFB /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +86,7 @@
 			name = bookshelf;
 			packageProductDependencies = (
 				19D5A1D32FBA1AC1000D4AFB /* Lottie */,
+				198E2974304CB05400A3929C /* SDWebImageSwiftUI */,
 			);
 			productName = bookshelf;
 			productReference = 19D5A1A12FB90A2A000D4AFB /* bookshelf.app */;
@@ -115,6 +118,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				19D5A1D22FBA1AC1000D4AFB /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				198E2973304CB05400A3929C /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 19D5A1A22FB90A2A000D4AFB /* Products */;
@@ -354,6 +358,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		198E2973304CB05400A3929C /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.4;
+			};
+		};
 		19D5A1D22FBA1AC1000D4AFB /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
@@ -365,6 +377,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		198E2974304CB05400A3929C /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 198E2973304CB05400A3929C /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
 		19D5A1D32FBA1AC1000D4AFB /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 19D5A1D22FBA1AC1000D4AFB /* XCRemoteSwiftPackageReference "lottie-ios" */;

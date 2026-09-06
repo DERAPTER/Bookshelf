@@ -7,24 +7,36 @@
 
 import SwiftUI
 
+enum DetailsPageState {
+     case back, save
+}
+
 struct AddDetailsViewContent: View {
     
     @State var bookName: String = ""
     @State var bookDescription: String = ""
     @State var isShowPlaceholder: Bool = true
+    var book: BookModelItem?
+    //var completion: (DetailsPageState) -> Void
+    var delegate: AddDetailsViewDelegate
+    
+    init(book: BookModelItem? = nil, delegate: AddDetailsViewDelegate) {
+        self.book = book
+        self._bookName = .init(initialValue: book?.title ?? "")
+        self.delegate = delegate
+        //self.completion = completion
+    }
     
     var body: some View {
         VStack {
-            NavHeader(title: "Мартин Иден") {
-                
+            NavHeader(title: book?.title ?? "") {
+                delegate.back()
             }
             
             VStack(spacing: 80) {
-                Image(.cover)
-                    .resizable()
-                    .scaledToFill()
+                
+                BookCover(coverId: book?.cover_i?.description)
                     .frame(width: 130, height: 180)
-                    .clipShape(.rect(cornerRadius: 3))
                     .overlay(alignment: Alignment(horizontal: .trailing, vertical: .top)) {
                         Button {
                             
@@ -57,7 +69,7 @@ struct AddDetailsViewContent: View {
                             .clipShape(.rect(cornerRadius: 10))
                             .overlay(alignment: .topTrailing) {
                                 Button {
-                                    
+                                    delegate.createText()
                                 } label: {
                                     Image(.ai)
                                         .resizable()
@@ -89,7 +101,7 @@ struct AddDetailsViewContent: View {
             Spacer()
             
             OrangeButton(title: "Добавить") {
-                
+                delegate.saveBook()
             }
         }
         .padding(.horizontal, 30)
@@ -98,6 +110,3 @@ struct AddDetailsViewContent: View {
     }
 }
 
-#Preview {
-    AddDetailsViewContent()
-}
