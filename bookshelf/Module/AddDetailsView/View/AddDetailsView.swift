@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 protocol AddDetailsViewProtocol: BaseViewProtocol {
     
@@ -18,6 +19,10 @@ protocol AddDetailsViewDelegate {
     func createText()
 }
 
+class AddDetailsViewModel: ObservableObject {
+    @Published var bookDescription: String = ""
+}
+
 class AddDetailsView: UIViewController, AddDetailsViewProtocol, AddDetailsViewDelegate {
     typealias PresenterType = AddDetailsPresenterProtocol
     var presenter: PresenterType?
@@ -25,7 +30,7 @@ class AddDetailsView: UIViewController, AddDetailsViewProtocol, AddDetailsViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let viewContent = AddDetailsViewContent(book: presenter?.book, delegate: self) 
+        let viewContent = AddDetailsViewContent(book: presenter?.book, delegate: self, viewModel: presenter!.viewModel)
         
         let content = UIHostingController(rootView: viewContent)
         addChild(content)

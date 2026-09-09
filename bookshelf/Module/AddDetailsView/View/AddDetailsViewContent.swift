@@ -14,17 +14,20 @@ enum DetailsPageState {
 struct AddDetailsViewContent: View {
     
     @State var bookName: String = ""
-    @State var bookDescription: String = ""
     @State var isShowPlaceholder: Bool = true
+    @ObservedObject var viewModel: AddDetailsViewModel
     var book: BookModelItem?
-    //var completion: (DetailsPageState) -> Void
+    @State var bookCover: UIImage = .cover
     var delegate: AddDetailsViewDelegate
+    @State var isShowPicker = false
+    @State var bookCoverType: ImageType
     
-    init(book: BookModelItem? = nil, delegate: AddDetailsViewDelegate) {
+    init(book: BookModelItem? = nil, delegate: AddDetailsViewDelegate, viewModel: AddDetailsViewModel) {
         self.book = book
         self._bookName = .init(initialValue: book?.title ?? "")
         self.delegate = delegate
-        //self.completion = completion
+        self.viewModel = viewModel
+        self.bookCoverType = .network(book?.cover_i?.description)
     }
     
     var body: some View {
@@ -35,11 +38,12 @@ struct AddDetailsViewContent: View {
             
             VStack(spacing: 80) {
                 
-                BookCover(coverId: book?.cover_i?.description)
+                BookCover2(image: bookCoverType)
                     .frame(width: 130, height: 180)
+                    .clipped()
                     .overlay(alignment: Alignment(horizontal: .trailing, vertical: .top)) {
                         Button {
-                            
+                            isShowPicker.toggle()
                         } label: {
                             ZStack {
                                 Circle()
@@ -52,13 +56,19 @@ struct AddDetailsViewContent: View {
                             }
                             .offset(x: 6, y: -6)
                         }
+                        .sheet(isPresented: $isShowPicker) {
+                            ImagePickerView(image: $bookCover)
+                        }
+                    }
+                    .onChange(of: bookCover) { oldValue, newValue in
+                        bookCoverType = .local(newValue)
                     }
                 
                 VStack(spacing: 30) {
                     BaseTextView(placeholder: "Название", text: $bookName)
                     
                     ZStack(alignment: .topLeading) {
-                        TextEditor(text: $bookDescription)
+                        TextEditor(text: $viewModel.bookDescription)
                             .scrollContentBackground(.hidden)
                             .frame(height: 114)
                             .padding(.horizontal, 15)
@@ -80,7 +90,7 @@ struct AddDetailsViewContent: View {
                                         .clipped()
                                 }
                             }
-                            .onChange(of: bookDescription) { oldValue, newValue in
+                            .onChange(of: viewModel.bookDescription) { oldValue, newValue in
                                 if newValue.count > 0 {
                                     isShowPlaceholder = false
                                 } else {

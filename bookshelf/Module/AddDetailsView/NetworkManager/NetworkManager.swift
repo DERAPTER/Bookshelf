@@ -11,12 +11,13 @@ class NetworkManager {
      let url = "https://bothub.chat/api/v2/openai/v1/chat/completions"
     let token = "eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdhNwVmMzI0LTc1NmUtNDV10C04YWYxLTF1MWNkMDRkMDE1NyIsIm1zRGV2ZWxvcGVyIjp0cnV1LCJpYXQi0jE3MzUz0TA3NjIsImV4cCI6MjA1MDk2Njc2Mn0.xL2fhtLOtHp_K4Xn_bEAhuKgnRwY1UGwaRk-XxirgdY"
     
-    func sendRequest(bookName: String) {
+    func sendRequest(bookName: String, completion: @escaping (String) -> Void) {
         guard let url = URL(string: self.url) else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let requestBodyStruct = BotHubResponse(model: "gpt-4o", messages: [Message(role: "user", content: "Опиши книгу \(bookName) в 3 - 5 предложений.")])
         
@@ -31,7 +32,12 @@ class NetworkManager {
             guard error == nil else { return }
             guard let data else { return }
             
-            print(String(decoding: data, as: UTF8.self))
+            do {
+                let response = try JSONDecoder().decode(ChatResponse.self, from: data)
+                completion(response.choices[0].message.content)
+            } catch {
+                print(error.localizedDescription)
+            }
         }.resume()
     }
 }
@@ -44,6 +50,14 @@ struct BotHubResponse: Encodable {
 struct Message: Codable {
     let role: String
     let content: String
+}
+
+struct ChatResponse: Decodable {
+    let choices: [ChatResponseChoice]
+}
+
+struct ChatResponseChoice: Decodable {
+    let message: Message
 }
 
 //{
