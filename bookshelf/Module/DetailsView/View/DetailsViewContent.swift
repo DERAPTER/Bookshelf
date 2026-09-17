@@ -97,6 +97,8 @@ struct DetailsViewContent: View {
                     .rotationEffect(.degrees(90))
                     .scaledToFill()
                     .frame(width: 20, height: 6)
+                    .contentShape(Rectangle())
+                    .padding(8)
             }
         }
         .foregroundStyle(.white)

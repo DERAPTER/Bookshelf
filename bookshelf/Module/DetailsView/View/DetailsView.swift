@@ -31,6 +31,9 @@ class DetailsView: UIViewController, DetailsViewProtocol {
         let contentView = DetailsViewContent(
             book: presenter?.book,
             viewModel: viewModel,
+            onBack: { [weak self] in
+                self?.navigationController?.popToRootViewController(animated: true)
+            },
             onStatusChange: { [weak self] status in
                 self?.presenter?.changeStatus(to: status)
             },
