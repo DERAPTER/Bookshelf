@@ -8,15 +8,19 @@
 import SwiftUI
 
 struct CommentView: View {
+    var date: String
+    var text: String
+
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("13.01.25")
+        VStack(alignment: .leading, spacing: 4) {
+            Text(date)
                 .foregroundStyle(.white)
                 .font(size: 12)
-            Text("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+            Text(text)
                 .foregroundStyle(.appGray)
                 .font(size: 13)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 12)
         .padding(.horizontal, 21)
         .background(.appDark)

@@ -10,9 +10,12 @@ import SwiftUI
 struct BaseTextView: View {
     var placeholder: String
     @Binding var text: String
-    
+    var onSubmit: (() -> Void)? = nil
+
     var body: some View {
         TextField(placeholder, text: $text)
+            .submitLabel(onSubmit != nil ? .done : .return)
+            .onSubmit { onSubmit?() }
             .frame(maxWidth: .infinity)
             .frame(height: 52)
             .padding(.horizontal, 10)

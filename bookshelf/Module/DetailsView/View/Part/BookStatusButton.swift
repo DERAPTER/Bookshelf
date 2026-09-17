@@ -10,27 +10,12 @@ import SwiftUI
 struct BookStatusButton: View {
     var status: BookStatus
     var action: () -> Void
-    private var btnText: String
-    
-    init(status: BookStatus, action: @escaping () -> Void) {
-        self.status = status
-        self.action = action
-        
-        switch status {
-        case .read:
-            self.btnText = "Читаю"
-        case .willRead:
-            self.btnText = "Прочитать"
-        case .didRead:
-            self.btnText = "Прочитал"
-        }
-    }
-    
+
     var body: some View {
         Button {
             action()
         } label: {
-            Text(btnText)
+            Text(status.title)
                 .padding(.vertical, 3)
                 .padding(.horizontal, 18)
                 .font(type: .bold, size: 14)
@@ -39,15 +24,12 @@ struct BookStatusButton: View {
                 .clipShape(Capsule())
         }
     }
-    
-    func btnColor() -> Color {
+
+    private func btnColor() -> Color {
         switch status {
-        case .read:
-            return Color.statusFirst
-        case .willRead:
-            return Color.statusSecond
-        case .didRead:
-            return Color.statusThird
+        case .read:     return Color.statusFirst
+        case .willRead: return Color.statusSecond
+        case .didRead:  return Color.statusThird
         }
     }
 }

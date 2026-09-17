@@ -16,10 +16,15 @@ struct MainViewContent: View {
     
     @State var searchField = ""
     @State private var selectedCategory: SelectedCategory = .willRead
-    var name: String
-    var completion: () -> Void
     
+//    var readingBooks: [Book]
+//    var unreadBooks: [Book]
+//    var willReadBooks: [Book]
+    @ObservedObject var viewModel: MainViewModel
+    
+    var name: String
     //var books: [Book]
+    var completion: (Book?) -> Void
     
     var body: some View {
         
@@ -38,7 +43,7 @@ struct MainViewContent: View {
                     Spacer()
                     
                     Button {
-                        completion()
+                        completion(nil )
                     } label: {
                         HStack(spacing: 10) {
                             Image(systemName: "book.closed")
@@ -78,31 +83,12 @@ struct MainViewContent: View {
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 20) {
-                                    Button {
-                                        
-                                    } label: {
-                                        Image(.cover)
-                                            .resizable()
-                                            .frame(width: 143, height: 212)
-                                            .clipShape(.rect(cornerRadius: 5))
-                                    }
-                                    
-                                    Button {
-                                        
-                                    } label: {
-                                        Image(.cover)
-                                            .resizable()
-                                            .frame(width: 143, height: 212)
-                                            .clipShape(.rect(cornerRadius: 5))
-                                    }
-                                    
-                                    Button {
-                                        
-                                    } label: {
-                                        Image(.cover)
-                                            .resizable()
-                                            .frame(width: 143, height: 212)
-                                            .clipShape(.rect(cornerRadius: 5))
+                                    ForEach(viewModel.readingBooks) { book in
+                                        Button {
+                                            completion(book)
+                                        } label: {
+                                            CoverFromFileManager(book: book)
+                                        }
                                     }
                                 }
                                 .padding(.horizontal, 30)
@@ -161,3 +147,35 @@ struct MainViewContent: View {
     }
     
 }
+
+struct CoverFromFileManager: View {
+    var book: Book
+    var body: some View {
+        if let image = Image.from(folderName: book.id!, fileName: "cover.jpeg") {
+            image
+                .resizable()
+                .frame(width: 143, height: 212)
+                .clipShape(.rect(cornerRadius: 5))
+        } else {
+            Image(.cover)
+                .resizable()
+                .frame(width: 143, height: 212)
+                .clipShape(.rect(cornerRadius: 5))
+        }
+    }
+}
+
+/*
+extension UIImage {
+    func getImage(url: String) -> UIImage? {
+        let fileManager = FileManager.default
+        let fileURL = URL(fileURLWithPath: url)
+        guard fileManager.fileExists(atPath: fileURL.path),
+              let data = try? Data(contentsOf: fileURL),
+              let image = UIImage(data: data) else {
+            return nil
+        }
+        return image
+    }
+}
+*/

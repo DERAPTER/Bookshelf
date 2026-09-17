@@ -66,6 +66,12 @@ extension DataBaseManager {
         storageManager.saveCover(bookId: bookId, cover: cover)
     }
     
+    /// `updateBookStatus` меняет статус книги и сохраняет контекст
+    func updateBookStatus(book: Book, status: BookStatus) {
+        book.status = status.rawValue
+        saveContext()
+    }
+    
     /// `fetchBooks` метод для получения всех книг
     func fetchBooks() {
         let request = Book.fetchRequest()
@@ -78,17 +84,43 @@ extension DataBaseManager {
             print(error.localizedDescription)
         }
     }
+    
+    /// `deleteBook` удаляет книгу, её заметки (каскадом) и файл обложки
+    func deleteBook(_ book: Book) {
+        if let id = book.id {
+            storageManager.deleteBookFolder(bookId: id)
+        }
+
+        persistentContainer.viewContext.delete(book)
+        saveContext()
+
+        if let index = books.firstIndex(where: { $0.objectID == book.objectID }) {
+            books.remove(at: index)
+        }
+    }
 }
 
 extension DataBaseManager {
     //MARK: Note
-    /// `addNote` функция для добавления заметки
+    /// `addNote` добавляет заметку к книге и сохраняет контекст
     func addNote(book: Book, noteText: String) {
-        let note: Note = {
-            $0.date = Date()
-            $0.id = UUID().uuidString
-            $0.book = book
-            return $0
-        }(Note(context: persistentContainer.viewContext))
+        let note = Note(context: persistentContainer.viewContext)
+        note.id = UUID().uuidString
+        note.date = Date()
+        note.text = noteText
+        note.book = book
+        saveContext()
+    }
+
+    /// `deleteNote` удаляет заметку и сохраняет контекст
+    func deleteNote(_ note: Note) {
+        persistentContainer.viewContext.delete(note)
+        saveContext()
+    }
+
+    /// `notes` для книги, отсортированные по убыванию даты
+    func notes(for book: Book) -> [Note] {
+        let set = book.notes as? Set<Note> ?? []
+        return set.sorted { ($0.date ?? .distantPast) > ($1.date ?? .distantPast) }
     }
 }

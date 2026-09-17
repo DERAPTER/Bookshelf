@@ -41,4 +41,16 @@ class StorageManager {
             return nil
         }
     }
+    
+    /// `deleteBookFolder` удаляет папку книги вместе с обложкой
+    func deleteBookFolder(bookId: String) {
+        let bookPath = path.appending(component: bookId)
+        do {
+            if FileManager.default.fileExists(atPath: bookPath.path) {
+                try FileManager.default.removeItem(at: bookPath)
+            }
+        } catch {
+            print("Failed to delete book folder: \(error.localizedDescription)")
+        }
+    }
 }

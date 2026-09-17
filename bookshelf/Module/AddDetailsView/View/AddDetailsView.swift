@@ -14,13 +14,15 @@ protocol AddDetailsViewProtocol: BaseViewProtocol {
 }
 
 protocol AddDetailsViewDelegate {
-    func saveBook()
+    func saveBook(imageType: ImageType, bookDescription: String, bookName: String, authorName: String)
     func back()
     func createText()
+    func goToMain()
 }
 
 class AddDetailsViewModel: ObservableObject {
     @Published var bookDescription: String = ""
+    @Published var isAddError: Bool = false
 }
 
 class AddDetailsView: UIViewController, AddDetailsViewProtocol, AddDetailsViewDelegate {
@@ -39,8 +41,17 @@ class AddDetailsView: UIViewController, AddDetailsViewProtocol, AddDetailsViewDe
         content.didMove(toParent: self)
     }
     
-    func saveBook() {
-        print("save")
+    func saveBook(imageType: ImageType, bookDescription: String, bookName: String, authorName: String) {
+        presenter?.createBook(imageType: imageType, bookDescription: bookDescription, bookName: bookName, authorName: authorName) { result in
+            switch result {
+            case .success(let success):
+                if success {
+                    self.goToMain()
+                }
+            case .failure(let failure):
+                print("error: \(failure)")
+            }
+        }
     }
     
     func back() {
@@ -49,5 +60,12 @@ class AddDetailsView: UIViewController, AddDetailsViewProtocol, AddDetailsViewDe
     
     func createText() {
         presenter?.createBookDescription()
+    }
+    
+    func goToMain() {
+        print("start animation")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.navigationController?.popToRootViewController(animated: true)
+        }
     }
 }

@@ -111,12 +111,21 @@ struct AddDetailsViewContent: View {
             Spacer()
             
             OrangeButton(title: "Добавить") {
-                delegate.saveBook()
+                delegate.saveBook(imageType: bookCoverType, bookDescription: viewModel.bookDescription, bookName: bookName, authorName: book?.author_name?.first ?? "-")
             }
+            .disabled((viewModel.bookDescription.count < 3 || bookName.count < 3) ? true : false)
+            .opacity((viewModel.bookDescription.count < 3 || bookName.count < 3) ? 0.5 : 1)
         }
         .padding(.horizontal, 30)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: Alignment(horizontal: .leading, vertical: .top))
         .background(.bgMain)
+        .alert(isPresented: $viewModel.isAddError) {
+            Alert(
+                title: Text("Ошибка"),
+                message: Text("При сохранении обложки произошла ошибка. Выберите другую"),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
 }
 

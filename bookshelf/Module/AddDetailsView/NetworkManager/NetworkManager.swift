@@ -9,7 +9,7 @@ import Foundation
 
 class NetworkManager {
      let url = "https://bothub.chat/api/v2/openai/v1/chat/completions"
-    let token = "eyJhbGci0iJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdhNwVmMzI0LTc1NmUtNDV10C04YWYxLTF1MWNkMDRkMDE1NyIsIm1zRGV2ZWxvcGVyIjp0cnV1LCJpYXQi0jE3MzUz0TA3NjIsImV4cCI6MjA1MDk2Njc2Mn0.xL2fhtLOtHp_K4Xn_bEAhuKgnRwY1UGwaRk-XxirgdY"
+    let token = "" //TOKEN
     
     func sendRequest(bookName: String, completion: @escaping (String) -> Void) {
         guard let url = URL(string: self.url) else { return }
@@ -40,6 +40,34 @@ class NetworkManager {
             }
         }.resume()
     }
+    
+    func loadCover(url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
+        var request = URLRequest(url: url)
+        request.addValue("image/jpeg", forHTTPHeaderField: "Content-Type")
+        URLSession.shared.dataTask(with: request) { data, resp, error in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                return
+            }
+            
+            guard let httpResp = resp as? HTTPURLResponse,
+            httpResp.statusCode == 200 else {
+                completion(.failure(SaveError.missingCover))
+                return
+            }
+            
+            guard let data else {
+                completion(.failure(SaveError.missingData))
+                return
+            }
+            completion(.success(data))
+        }.resume()
+    }
+}
+
+enum SaveError: Error {
+    case missingCover
+    case missingData
 }
 
 struct BotHubResponse: Encodable {
