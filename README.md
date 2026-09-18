@@ -106,27 +106,30 @@ bookshelf/
 ## 🔄 Флоу пользователя
 
 ```
-PreviewView (Lottie-анимация)
-        │
-        ▼
-   ┌─────────────┐
-   │ Первый вход?│
-   └──────┬──────┘
-    Да    │    Нет
-    ▼     │     ▼
-RegistView     OnboardingView
-    │               │
-    └───────┬───────┘
+ PreviewView (Lottie-анимация)
+            │
+            ▼
+     ┌─────────────┐
+     │ Первый вход?│
+     └──────┬──────┘
+     Да           Нет
+     ▼             ▼
+RegistView         |
+     |             |
+     ▼             |
+OnboardingView     |
+     │             │
+     └──────┬──────┘
             ▼
          MainView
             │
       ┌─────┼─────┐
       ▼     ▼     ▼
-   AddBook  Details  AddDetails
-   (поиск)  (книга)  (сохранение)
-      │
-      ▼
-  BookListView
+AddBook  Details  AddDetails
+(поиск)  (книга)  (сохранение)
+   │
+   ▼
+BookListView
 ```
 
 ---
